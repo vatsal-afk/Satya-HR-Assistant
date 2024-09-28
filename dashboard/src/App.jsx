@@ -1,27 +1,17 @@
-import React,{ useState } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './App.css'
-import UserLogin from './components/UserLogin.jsx';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Dashboard from "./components/dashboard";
+import Dash from "./components/dash";
 
 function App() {
-  
-
   return (
-    <>
-      <div>
-      
-     
-     
-
-      <Router>
-        <Routes>
-          <Route path="/" element={<UserLogin/>} />
-          
-        </Routes>
-      </Router>
-    </div>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dash" element={<Dash />} /> {/* Define the rankings route */}
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
