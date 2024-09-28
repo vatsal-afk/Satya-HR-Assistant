@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { logout } from './services/authService';
+import { logout } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 // import Login from './login';
 // import Upload from './uploads';
