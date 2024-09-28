@@ -7,8 +7,8 @@ Original file is located at
     https://colab.research.google.com/drive/18I1Mm8zfqjQozPsKBRC-Oh_2nyA17CxD
 """
 
-!pip install flask pandas nltk vaderSentiment spacy scikit-learn pdfplumber
-!python -m spacy download en_core_web_sm
+# !pip install flask pandas nltk vaderSentiment spacy scikit-learn pdfplumber
+# !python -m spacy download en_core_web_sm
 
 from flask import Flask, request, jsonify
 import pandas as pd

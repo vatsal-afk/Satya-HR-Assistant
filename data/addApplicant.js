@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 // Initialize Express app
 const app = express();
@@ -12,6 +14,17 @@ mongoose.connect("mongodb://localhost:27017/ranks", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
+
+app.use(bodyParser.json());
+const corsOptions = {
+    origin: 'http://localhost:5174', // Fixed the extra space and removed the trailing slash
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Define the schema
 const applicantSchema = new mongoose.Schema({
