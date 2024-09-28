@@ -6,9 +6,9 @@ import Dash from "./dash";
 
 import Upload from './uploads';
 
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Dash from './dash.jsx';
+
+
+
 //import Login from './login.jsx';
 //import PrivateRoute from './PrivateRoute.jsx';
 
