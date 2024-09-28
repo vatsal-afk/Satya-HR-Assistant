@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { logout } from './services/authService';
 import { useNavigate } from 'react-router-dom';
-import Login from './login';
+// import Login from './login';
+// import Upload from './uploads';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -148,6 +149,10 @@ function Dash({name}) {
   const username = 'JohnDoe'
   const navigate = useNavigate();
 
+  const handleFileUploadClick = () => {
+    navigate('/upload'); // Navigate to file upload page
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -167,6 +172,7 @@ function Dash({name}) {
         <Header>
           <Title>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</Title>
           <LogoutButton>Logout</LogoutButton>
+          <Button onClick={handleFileUploadClick}>Upload</Button>
         </Header>
 
         {/* Overview and Rankings Buttons */}
