@@ -142,7 +142,7 @@ dashboard/node_modules
 dashboard/dist
 dashboard/dist-ssr
 dashboard/*.local
-
+/node_modules
 # Editor directories and files
 dashboard/.vscode/*
 !dashboard/.vscode/extensions.json

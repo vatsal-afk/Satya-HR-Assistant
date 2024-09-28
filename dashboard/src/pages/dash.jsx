@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CircularProgressbar } from 'react-circular-progressbar';
@@ -7,33 +8,42 @@ import NavBar from '../components/navBar';
 import graph1 from '../assets/graph1.jpg';
 
 
+
 const DashboardContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 100vw;
   font-family: Arial, sans-serif;
+
 `;
+
 
 const MainContent = styled.main`
   flex: 1;
   padding: 20px;
   background-color: #ecf0f1;
+
   height: calc(100% - 70px);
   overflow-y: auto;
 `;
+
 
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+
 `;
+
 
 const Title = styled.h1`
   margin: 0;
   color: #2c3e50;
+
 `;
+
 
 const Button = styled.button`
   background-color: #3498db;
@@ -47,7 +57,9 @@ const Button = styled.button`
   &:hover {
     background-color: #2980b9;
   }
+
 `;
+
 
 const Card = styled.div`
   background-color: white;
@@ -56,21 +68,26 @@ const Card = styled.div`
   padding: 20px;
   margin-bottom: 20px;
   flex: 1;
+
 `;
+
 
 const CardTitle = styled.h2`
   margin-top: 0;
   color: #2c3e50;
+
 `;
 
 const CardContent = styled.div`
   color: #34495e;
 `;
 
+
 const BottomRow = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
+
 `;
 
 const ScoreSection = styled.div`
@@ -80,11 +97,14 @@ const ScoreSection = styled.div`
   justify-content: center;
 `;
 
+
 const RankingsList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+
 `;
+
 
 const ListItem = styled.li`
   padding: 15px;
@@ -97,6 +117,7 @@ const ListItem = styled.li`
   &:hover {
     background-color: #ecf0f1;
   }
+
 `;
 
 function Dash({ username }) {
@@ -119,10 +140,12 @@ function Dash({ username }) {
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
+
   };
 
   return (
     <DashboardContainer>
+
       <NavBar />
       <MainContent>
         <Header>
@@ -178,11 +201,14 @@ function Dash({ username }) {
                 {user.name} - Rank {user.rank}
               </ListItem>
             ))}
+
           </RankingsList>
         )}
       </MainContent>
     </DashboardContainer>
+
   );
+
 }
 
 export default Dash;
