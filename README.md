@@ -68,3 +68,5 @@ Technologies used in the project:
 *   NLPs
 *   matplotlib
 *   Sentiment-Analysis
+
+<p>Made with ❤️ by <strong>TensorTitans</strong></p>
