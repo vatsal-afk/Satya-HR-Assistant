@@ -36,11 +36,11 @@ app.post("/addApplicant", (req, res) => {
     newApplicant.save()
         .then(() => {
             console.log("New applicant added:", req.body);
-            res.status(200).send("Applicant added successfully!");
+            res.status(200).send("Applicant added successfully!"); // Respond once
         })
         .catch((err) => {
             console.error("Error adding applicant:", err);
-            res.status(500).send("Error adding applicant.");
+            res.status(500).send("Error adding applicant."); // Respond in case of an error
         });
 });
 
@@ -48,8 +48,13 @@ app.post("/addApplicant", (req, res) => {
 app.get("/sortedApplicants", (req, res) => {
     Applicant.find().sort({ Weighted_Score: -1 }).exec()
         .then((applicants) => {
-            console.log("Sorted Applicants:", applicants); // Log sorted applicants
-            res.status(200).json(applicants);
+            if (applicants.length === 0) {
+                console.log("No applicants found.");
+                return res.status(404).send("No applicants found.");
+            }
+            console.log("Sorted Applicants Count:", applicants.length); // Log number of applicants
+            console.log("Sorted Applicants Data:", applicants); // Log all sorted applicants
+            res.status(200).json(applicants); // Send response with sorted applicants
         })
         .catch((err) => {
             console.error("Error retrieving applicants:", err);
