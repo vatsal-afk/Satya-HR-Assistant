@@ -82,12 +82,16 @@ const RankingsList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  // display: grid;
+  // grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
+  color:black;
+  
+  
 `;
 
 const ListItem = styled.li`
+  
   padding: 15px;
   background-color: white;
   border-radius: 5px;
@@ -123,7 +127,7 @@ function Dash({ username }) {
       <NavBar />
       <MainContent>
         <Header>
-          <Title>{selectedUser ? 'User Overview' : 'Applicants'}</Title>
+          <Title>{selectedUser ? 'User Overview' : 'Rankings'}</Title>
           {selectedUser && <DownloadPDFButton>Download</DownloadPDFButton>}
         </Header>
 

@@ -17,7 +17,7 @@ mongoose.connect("mongodb://localhost:27017/ranks", {
 
 app.use(bodyParser.json());
 const corsOptions = {
-    origin: 'http://localhost:5174', // Fixed the extra space and removed the trailing slash
+    origin: 'http://localhost:5173', // Fixed the extra space and removed the trailing slash
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,

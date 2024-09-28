@@ -10,13 +10,23 @@ import graph4 from '../assets/graphd4.jpg';
 const Container = styled.div`
   background-color: #ecf0f1;
   min-height: 100vh;
-  // padding: 20px;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 1.3rem;
 `;
 
 const Title = styled.h1`
-  margin-top: 1.8rem;
-  margin-left: 1.3rem;
   color: #2c3e50;
+  margin: 0;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
 `;
 
 const Button = styled.button`
@@ -30,9 +40,34 @@ const Button = styled.button`
   &:hover {
     background-color: #2980b9;
   }
-  margin-top: 2rem;
-  margin-left: 1.3rem;
 `;
+
+// const Container = styled.div`
+//   background-color: #ecf0f1;
+//   min-height: 100vh;
+//   // padding: 20px;
+// `;
+
+// const Title = styled.h1`
+//   margin-top: 1.8rem;
+//   margin-left: 1.3rem;
+//   color: #2c3e50;
+// `;
+
+// const Button = styled.button`
+//   background-color: #3498db;
+//   color: white;
+//   border: none;
+//   padding: 10px 15px;
+//   border-radius: 5px;
+//   cursor: pointer;
+//   font-size: 16px;
+//   &:hover {
+//     background-color: #2980b9;
+//   }
+//   margin-top: 2rem;
+//   margin-left: 1.3rem;
+// `;
 
 const CardsContainer = styled.div`
   display: flex;
@@ -115,27 +150,47 @@ function Dashboard() {
     qualifiedResumes: 0,
     riskyResumes: 0,
   });
+  const [resumes, setResumes] = useState([]);
+
   const handleFileUploadClick = () => {
-    navigate('/upload'); // Navigate to file upload page
+    navigate('/upload');
   };
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchResumes = async () => {
       try {
-        const response = await fetch("/api/dashboard-stats");
+        const response = await fetch("http://localhost:3000/sortedApplicants");
         const data = await response.json();
-        setStats({
-          totalResumes: data.totalResumes,
-          qualifiedResumes: data.qualifiedResumes,
-          riskyResumes: data.riskyResumes,
-        });
+        setResumes(data);
+        calculateStats(data);
       } catch (error) {
-        console.error("Error fetching dashboard stats:", error);
+        console.error("Error fetching resumes:", error);
       }
     };
 
-    fetchStats();
+    fetchResumes();
   }, []);
+
+  const calculateStats = (resumeData) => {
+    const totalResumes = resumeData.length;
+    
+    // Calculate qualified resumes
+    const weightedScores = resumeData.map(resume => resume.weighted_score);
+    const minScore = Math.min(...weightedScores);
+    const maxScore = Math.max(...weightedScores);
+    const qualificationThreshold = minScore + (maxScore - minScore) / 2;
+    const qualifiedResumes = resumeData.filter(resume => resume.weighted_score >= qualificationThreshold).length;
+    
+    // Calculate risky resumes
+    const meanScore = weightedScores.reduce((sum, score) => sum + score, 0) / totalResumes;
+    const riskyResumes = resumeData.filter(resume => resume.weighted_score > meanScore).length;
+
+    setStats({
+      totalResumes,
+      qualifiedResumes,
+      riskyResumes,
+    });
+  };
 
   const handleRanking = () => {
     navigate("dash");
@@ -144,8 +199,13 @@ function Dashboard() {
   return (
     <Container>
       <NavBar />
-      <Title>Dashboard</Title>
-      <Button onClick={handleFileUploadClick}>Upload</Button>
+      <HeaderContainer>
+        <Title>Dashboard</Title>
+        <ButtonGroup>
+          <Button onClick={handleFileUploadClick}>Upload</Button>
+          <Button onClick={handleRanking}>Rankings</Button>
+        </ButtonGroup>
+      </HeaderContainer>
       
       <CardsContainer>
         <Card>
@@ -188,8 +248,6 @@ function Dashboard() {
           <GraphTitle>Monthly Statistics</GraphTitle>
         </GraphCard>
       </GraphsContainer>
-
-      <Button onClick={handleRanking}>Rankings</Button>
     </Container>
   );
 }
