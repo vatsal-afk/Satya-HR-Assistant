@@ -120,39 +120,40 @@ export default function FileUpload() {
       return;
     }
 
-    if (file1.type !== 'application/zip') {
-      setMessage('File 1 must be a ZIP file.');
-      setIsSuccess(false);
-      return;
-    }
+    // if (file1.type !== 'application/zip') {
+    //   setMessage('File 1 must be a ZIP file.');
+    //   setIsSuccess(false);
+    //   return;
+    // }
 
-    if (file2.type !== 'application/pdf') {
-      setMessage('File 2 must be a PDF file.');
-      setIsSuccess(false);
-      return;
-    }
+    // if (file2.type !== 'application/pdf') {
+    //   setMessage('File 2 must be a PDF file.');
+    //   setIsSuccess(false);
+    //   return;
+    // }
 
     const formData = new FormData();
-    formData.append('file1', file1);
-    formData.append('file2', file2);
+    formData.append('recommendations', file1);
+    formData.append('resume', file2);
 
     try {
-      // Replace '/api/upload' with your actual backend endpoint
-      const response = await fetch('/api/upload', {
+      const response = await fetch('/api/analyze', {
         method: 'POST',
         body: formData,
       });
 
       if (response.ok) {
-        setMessage('Files uploaded successfully!');
+        const result = await response.json();
+        setMessage('Files processed successfully!');
         setIsSuccess(true);
+        console.log('Analysis results:', result);
       } else {
-        setMessage('Upload failed. Please try again.');
+        setMessage('Processing failed. Please try again.');
         setIsSuccess(false);
       }
     } catch (error) {
       console.error('Upload error:', error);
-      setMessage('An error occurred during upload.');
+      setMessage('An error occurred during processing.');
       setIsSuccess(false);
     }
   };
@@ -182,5 +183,5 @@ export default function FileUpload() {
         )}
       </Card>
     </Container>
-  );
+  );
 }

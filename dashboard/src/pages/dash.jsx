@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { logout } from '../services/authService';
-import { useNavigate } from 'react-router-dom';
-// import Login from './login';
-// import Upload from './uploads';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import DownloadPDFButton from '../components/downloadButton';
+import NavBar from '../components/navBar';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -11,71 +11,27 @@ const DashboardContainer = styled.div`
   height: 100vh;
   width: 100vw;
   font-family: Arial, sans-serif;
-`
-
-
-const LogoutButton = styled.button`
-  background-color: #f44336;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  float: right;
-
-  &:hover {
-    background-color: #d32f2f;
-  }
 `;
-
-const TopHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #2c3e50;
-  color: white;
-  padding: 15px 20px;
-`
-
-const SearchBar = styled.input`
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  width: 300px;
-  font-size: 16px;
-`
-
-const ProfileIcon = styled.div`
-  background-color: #34495e;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-`
-
-const Greeting = styled.div`
-  font-size: 18px;
-  color: white;
-`
 
 const MainContent = styled.main`
   flex: 1;
   padding: 20px;
   background-color: #ecf0f1;
-  height: calc(100% - 70px); /* Adjust height excluding top header */
+  height: calc(100% - 70px);
   overflow-y: auto;
-`
+`;
 
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-`
+`;
 
 const Title = styled.h1`
   margin: 0;
   color: #2c3e50;
-`
+`;
 
 const Button = styled.button`
   background-color: #3498db;
@@ -89,17 +45,7 @@ const Button = styled.button`
   &:hover {
     background-color: #2980b9;
   }
-`
-
-const OverviewButtons = styled.div`
-  display: flex;
-  gap: 10px;
-  margin: 20px 0;
-`
-
-const OverviewButton = styled(Button)`
-  width: 120px;
-`
+`;
 
 const Card = styled.div`
   background-color: white;
@@ -108,33 +54,46 @@ const Card = styled.div`
   padding: 20px;
   margin-bottom: 20px;
   flex: 1;
-`
+`;
 
 const CardTitle = styled.h2`
   margin-top: 0;
   color: #2c3e50;
-`
+`;
 
 const CardContent = styled.div`
   color: #34495e;
-`
+`;
 
 const BottomRow = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
-`
+`;
+
+const ScoreSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const RankingsList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-`
+  // display: grid;
+  // grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  color:black;
+  
+  
+`;
 
 const ListItem = styled.li`
+  
   padding: 15px;
   background-color: white;
-  margin-bottom: 10px;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -142,77 +101,83 @@ const ListItem = styled.li`
   &:hover {
     background-color: #ecf0f1;
   }
-`
+`;
 
-function Dash({name}) {
-  const [activeTab, setActiveTab] = useState('overview')
-  const username = 'JohnDoe'
-  const navigate = useNavigate();
+function Dash({ username }) {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [applicants, setApplicants] = useState([]);
 
-  const handleFileUploadClick = () => {
-    navigate('/upload'); // Navigate to file upload page
-  };
+  useEffect(() => {
+    fetch('http://localhost:3000/sortedApplicants')
+      .then((response) => response.json())
+      .then((data) => {
+        setApplicants(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching applicants:', error);
+      });
+  }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleUserClick = (user) => {
+    setSelectedUser(user);
   };
 
   return (
     <DashboardContainer>
-      {/* Top Header with Search, Profile Icon, and Greeting */}
-      <TopHeader>
-        <Greeting>Hey! `${name}`</Greeting>
-        <SearchBar type="text" placeholder="Search..." />
-        <ProfileIcon />
-      </TopHeader>
-
-      {/* Main Content */}
+      <NavBar />
       <MainContent>
         <Header>
-          <Title>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</Title>
-          <LogoutButton>Logout</LogoutButton>
-          <Button onClick={handleFileUploadClick}>Upload</Button>
+          <Title>{selectedUser ? 'User Overview' : 'Rankings'}</Title>
+          {selectedUser && <DownloadPDFButton>Download</DownloadPDFButton>}
         </Header>
 
-        {/* Overview and Rankings Buttons */}
-        <OverviewButtons>
-          <OverviewButton onClick={() => setActiveTab('overview')}>Overview</OverviewButton>
-          <OverviewButton onClick={() => setActiveTab('rankings')}>Rankings</OverviewButton>
-        </OverviewButtons>
-
-        {activeTab === 'overview' && (
+        {selectedUser ? (
           <BottomRow>
-            <Card>
-              <CardTitle>Graph</CardTitle>
-              <CardContent>
-                {/* Placeholder for the graph */}
-                <p>Graph content here...</p>
-              </CardContent>
-            </Card>
             <Card>
               <CardTitle>Candidate Info</CardTitle>
               <CardContent>
-                <p>John Doe - Frontend Developer</p>
-                <p>Jane Smith - UX Designer</p>
-                <p>Mike Johnson - Data Analyst</p>
+                <p>ID: {selectedUser.ID}</p>
+                <p>Number of Jobs: {selectedUser.Number_of_Jobs}</p>
+                <p>Years of Experience: {selectedUser.Years_of_Experience}</p>
+                <p>Risk Category: {selectedUser.Risk_Category}</p>
+                <Button onClick={() => setSelectedUser(null)}>Back to Applicants</Button>
+              </CardContent>
+            </Card>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 50 }}>
+              <ScoreSection>
+                <div style={{ width: 150, height: 150 }}>
+                  <CircularProgressbar value={selectedUser.Weighted_Score} text={`${selectedUser.Weighted_Score.toFixed(2)}`} />
+                </div>
+                <h3 style={{ color: 'black', marginTop: 10 }}>Weighted Score</h3>
+              </ScoreSection>
+            </div>
+
+            <Card>
+              <CardTitle>Skills</CardTitle>
+              <CardContent>
+                <p>Soft Skills: {selectedUser.Soft_skill_count}</p>
+                <p>Technical Skills: {selectedUser.Technical_skill_count}</p>
+                <p>Number of Adjectives: {selectedUser.Number_of_Adjectives}</p>
+                <p>Number of Degrees: {selectedUser.Number_of_Degrees}</p>
+                <p>Number of Certificates: {selectedUser.Number_of_Certificates}</p>
               </CardContent>
             </Card>
           </BottomRow>
-        )}
-
-        {activeTab === 'rankings' && (
+        ) : (
           <RankingsList>
-            <ListItem>John Doe - Rank 1</ListItem>
-            <ListItem>Jane Smith - Rank 2</ListItem>
-            <ListItem>Mike Johnson - Rank 3</ListItem>
-            <ListItem>Sarah Brown - Rank 4</ListItem>
-            <ListItem>Tom Wilson - Rank 5</ListItem>
+            {applicants.map((applicant) => (
+              <ListItem key={applicant._id} onClick={() => handleUserClick(applicant)}>
+                ID: {applicant.ID}<br />
+                Experience: {applicant.Years_of_Experience} years<br />
+                Risk: {applicant.Risk_Category}
+              </ListItem>
+            ))}
           </RankingsList>
         )}
       </MainContent>
     </DashboardContainer>
-  )
+  );
 }
 
 export default Dash;

@@ -5,16 +5,17 @@ import os
 
 # Sample data (this would replace your JSON file)
 data = {
-        "ID": 1003,
-        "Number_of_Jobs": 1,
-        "Number_of_Adjectives": 75,
-        "Number_of_Degrees": 0,
-        "Number_of_Certificates": 0,
-        "Years_of_Experience": 2,
-        "Soft_skill_count": 3,
-        "Technical_skill_count": 1,
-        "Weighted_Score": 30.25,
-        "Risk_Category": "Risky"
+        
+"ID":649,
+"Number_of_Jobs":18.18181818,
+"Number_of_Adjectives":14.2384106,
+"Number_of_Degrees":7.692307692,
+"Number_of_Certificates":0,
+"Years_of_Experience":9.677419355,
+"Soft skill count":54.54545455,
+"Technical skill count":4.166666667,
+"Risk_Category":"Maybe Risky",
+"Weighted_Score_Normalized":15.82058414
     }
 
 # Wrap the dictionary in a list to create a DataFrame
