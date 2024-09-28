@@ -56,6 +56,7 @@ def main():
     # Step 4: Print the response (summary, job profile, and technical skills)
 
     print(response.text)
+    return(response.text)
 
 if __name__ == "__main__":
     main()

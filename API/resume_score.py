@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1KCe5V6shj6Ke_jsHM_FzOxGDwUqg0AOX
 """
 
-pip install pdfplumber
+# pip install pdfplumber
 
 import pdfplumber
 import re
@@ -352,6 +352,7 @@ def main():
 
     # Output scores
     print(f"Resume score: {resume_score}")
+    return(resume_score)
 
 
 
