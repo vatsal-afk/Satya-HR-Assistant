@@ -40,7 +40,7 @@ const DownloadPDFButton = () => {
   return (
     <div>
       <button onClick={handleDownload} disabled={isLoading}>
-        {isLoading ? 'Generating...' : 'Download as PDF'}
+        {isLoading ? 'Generating...' : 'Download'}
       </button>
       {showErrorMessage && (
         <p style={{ color: 'red' }}>An error occurred while generating the PDF. Please try again later.</p>

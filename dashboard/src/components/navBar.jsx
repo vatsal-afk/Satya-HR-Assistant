@@ -19,7 +19,7 @@ width:100vw;
 
 const SearchBar = styled.input`
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 1.3rem;
   border: none;
   width: 300px;
   font-size: 16px;
