@@ -1,22 +1,20 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Dash from './dash.jsx';
 import Login from './login.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route 
-          path="/dashboard" 
-          element={
-            <PrivateRoute>
-              <Dash />
-            </PrivateRoute>
-          } 
+        <Route
+          path="/dashboard"
+          element={<PrivateRoute element={Dash} />}
         />
+        {/* Redirect any unknown routes to the login page */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

@@ -7,7 +7,10 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT =  5000;
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // replace with your frontend's URL
+    credentials: true
+  }));
 app.use(bodyParser.json());
 
 const db = new sqlite3.Database(':memory:', (err) => {
@@ -47,20 +50,42 @@ app.post('/signup', (req, res) => {
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'your_secret_key'; // Replace this with your actual secret
 
+app.get('/users', (req, res) => {
+    db.all(`SELECT id, name, email FROM users`, [], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ users: rows });
+    });
+});
+
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-
+    console.log('Login attempt with email:', email); // Log the email received
     db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, user) => {
-        if (err || !user) {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Server error' });
+        }
+        if (!user) {
+            console.log('User not found');
             return res.status(401).json({ message: 'Invalid credentials' });
         }
+        
+        // Compare hashed password
         bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) {
+                console.error('Error comparing passwords:', err);
+                return res.status(500).json({ message: 'Server error' });
+            }
             if (isMatch) {
-                // Generate JWT token on successful login
+                console.log('Password match, generating token');
                 const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
-                res.json({ message: 'Login successful', token });
+                return res.json({ message: 'Login successful', token });
             } else {
-                res.status(401).json({ message: 'Invalid credentials' });
+                console.log('Password mismatch');
+                return res.status(401).json({ message: 'Invalid credentials' });
             }
         });
     });

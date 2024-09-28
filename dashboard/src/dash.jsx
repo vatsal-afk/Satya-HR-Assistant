@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { logout } from './services/authService';
+import { useNavigate } from 'react-router-dom';
+import Login from './login';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -8,6 +11,21 @@ const DashboardContainer = styled.div`
   width: 100vw;
   font-family: Arial, sans-serif;
 `
+
+
+const LogoutButton = styled.button`
+  background-color: #f44336;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
+`;
 
 const TopHeader = styled.div`
   display: flex;
@@ -125,15 +143,21 @@ const ListItem = styled.li`
   }
 `
 
-function Dash() {
+function Dash({name}) {
   const [activeTab, setActiveTab] = useState('overview')
   const username = 'JohnDoe'
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <DashboardContainer>
       {/* Top Header with Search, Profile Icon, and Greeting */}
       <TopHeader>
-        <Greeting>Hey! {username}</Greeting>
+        <Greeting>Hey! `${name}`</Greeting>
         <SearchBar type="text" placeholder="Search..." />
         <ProfileIcon />
       </TopHeader>
@@ -142,7 +166,7 @@ function Dash() {
       <MainContent>
         <Header>
           <Title>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</Title>
-          {activeTab === 'overview' && <Button>Download</Button>}
+          <LogoutButton>Logout</LogoutButton>
         </Header>
 
         {/* Overview and Rankings Buttons */}

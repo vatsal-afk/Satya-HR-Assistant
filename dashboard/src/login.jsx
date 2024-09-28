@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { login, signup } from './services/authService'; // Assuming you have login/signup functions
+import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
   display: flex;
@@ -78,6 +80,7 @@ function Login() {
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,40 +91,30 @@ function Login() {
       return;
     }
 
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+    if (!isLogin && !name) {
+      setError('Please enter your name');
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Store token in localStorage
-        localStorage.setItem('token', data.token);
-        // Redirect to dashboard
-        window.location.href = '/dashboard';
+      if (isLogin) {
+        // Call the login service
+        const data = await login(email, password);
+        //console.log('Login successful:', data);
+        if (data.token) {
+          localStorage.setItem('token', data.token); // Save token to localStorage
+          window.location.href = '/dashboard'; // Redirect to dashboard
+        }
       } else {
-        setError(data.message);
+        // Call the signup service
+        await signup(name, email, password);
+        setIsLogin(true); // Switch to login view after successful signup
+        setError('Account created! Please log in.');
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+    } catch (error) {
+      setError(isLogin ? 'Invalid credentials.' : 'Account already exists.');
     }
-};
-
+  };
 
   return (
     <PageContainer>

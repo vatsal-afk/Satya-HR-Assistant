@@ -1,13 +1,31 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-const PrivateRoute = ({ children }) => {
-  const isAuthenticated = () => {
-    const token = localStorage.getItem('token');
-    return !!token; // Returns true if a token exists
-  };
+const PrivateRoute = ({ element: Element }) => {
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/', { replace: true });
+      }
+    };
 
-  return isAuthenticated() ? children : <Navigate to="/" />;
+    checkAuth();
+    // Set up an interval to periodically check authentication
+    const intervalId = setInterval(checkAuth, 5000); // Check every 5 seconds
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [navigate]);
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return null; // Render nothing while redirecting
+  }
+
+  return <Element />;
 };
 
 export default PrivateRoute;
