@@ -1,40 +1,17 @@
-const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const db = require('../config/database');
+const JWT_SECRET = 'your_jwt_secret_key';
 
-const app = express();
-const PORT =  5000;
-
-app.use(cors());
-app.use(bodyParser.json());
-
-const db = new sqlite3.Database(':memory:', (err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Connected to the SQLite database.');
-});
-
-db.run(`CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
-)`);
-
-app.get('/status', (req, res) => {
-    res.send('API is working');
-  });
-
-app.post('/signup', (req, res) => {
+// Signup
+exports.signup = (req, res) => {
     const { name, email, password } = req.body;
 
     bcrypt.hash(password, 10, (err, hashedPassword) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
+
         db.run(`INSERT INTO users (name, email, password) VALUES (?, ?, ?)`, [name, email, hashedPassword], function(err) {
             if (err) {
                 return res.status(400).json({ error: err.message });
@@ -42,21 +19,19 @@ app.post('/signup', (req, res) => {
             res.json({ id: this.lastID, name, email });
         });
     });
-});
+};
 
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'your_secret_key'; // Replace this with your actual secret
-
-app.post('/login', (req, res) => {
+// Login
+exports.login = (req, res) => {
     const { email, password } = req.body;
 
     db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, user) => {
         if (err || !user) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
+
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (isMatch) {
-                // Generate JWT token on successful login
                 const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
                 res.json({ message: 'Login successful', token });
             } else {
@@ -64,9 +39,4 @@ app.post('/login', (req, res) => {
             }
         });
     });
-});
-
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+};

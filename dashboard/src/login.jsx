@@ -79,32 +79,49 @@ function Login() {
   const [name, setName] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setError('')
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
 
     if (!email || !password) {
-      setError('Please fill in all fields')
-      return
-    }
-
-    if (!isLogin && !name) {
-      setError('Please enter your name')
-      return
+      setError('Please fill in all fields');
+      return;
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address')
-      return
+      setError('Please enter a valid email address');
+      return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters long')
-      return
+      setError('Password must be at least 6 characters long');
+      return;
     }
 
-    console.log(isLogin ? 'Logging in...' : 'Signing up...', { email, password, name })
-  }
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store token in localStorage
+        localStorage.setItem('token', data.token);
+        // Redirect to dashboard
+        window.location.href = '/dashboard';
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+    }
+};
+
 
   return (
     <PageContainer>
