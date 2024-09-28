@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css'; // Import the styles for the progress bar
-import DownloadPDFButton from './downloadButton';
-import NavBar from './navBar';
+import DownloadPDFButton from '../components/downloadButton';
+import NavBar from '../components/navBar';
 import graph1 from '../assets/graph1.jpg';
+
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -100,19 +101,21 @@ const ListItem = styled.li`
 
 function Dash({ username }) {
   const [selectedUser, setSelectedUser] = useState(null);
+  const [rankings, setRankings] = useState([]);
   const [name, setName] = useState('User');
 
-  if (username) {
-    setName(username);
-  }
-
-  const rankings = [
-    { name: 'John Doe', rank: 1, role: 'Frontend Developer', weightedScore: 85, resumeScore: 88, riskFactor: 30, graph: graph1,riskFactor:33 },
-    { name: 'Jane Smith', rank: 2, role: 'UX Designer', weightedScore: 72, resumeScore: 75, riskFactor: 40 },
-    { name: 'Mike Johnson', rank: 3, role: 'Data Analyst', weightedScore: 90, resumeScore: 92, riskFactor: 25 },
-    { name: 'Sarah Brown', rank: 4, role: 'Backend Developer', weightedScore: 65, resumeScore: 70, riskFactor: 55 },
-    { name: 'Tom Wilson', rank: 5, role: 'Product Manager', weightedScore: 78, resumeScore: 80, riskFactor: 45 },
-  ];
+  111// Fetch rankings from the server when the component mounts
+  useEffect(() => {
+    fetch('/sortedApplicants')
+      .then((response) => response.json())
+      .then((data) => {
+        // Assuming your API returns a list of applicants in JSON format
+        setRankings(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching rankings:', error);
+      });
+  }, []);
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
@@ -129,7 +132,6 @@ function Dash({ username }) {
 
         {selectedUser ? (
           <BottomRow>
-            
             <Card>
               <CardTitle>Candidate Info</CardTitle>
               <CardContent>
@@ -140,26 +142,22 @@ function Dash({ username }) {
             </Card>
 
             {/* Score Meters Section */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',marginTop:50}}>
-              
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 50 }}>
               {/* Resume Score Meter */}
               <ScoreSection>
-                
                 <div style={{ width: 150, height: 150 }}>
                   <CircularProgressbar value={selectedUser.resumeScore} text={`${selectedUser.resumeScore}%`} />
                 </div>
-                <h3 style={{color:'black',marginTop:10}}>Resume Score</h3>
+                <h3 style={{ color: 'black', marginTop: 10 }}>Resume Score</h3>
               </ScoreSection>
 
               {/* Risk Factor Meter */}
               <ScoreSection style={{ marginTop: '7rem' }}>
-                
                 <div style={{ width: 150, height: 150 }}>
                   <CircularProgressbar value={selectedUser.riskFactor} text={`${selectedUser.riskFactor}%`} />
                 </div>
-                <h3 style={{color:'black',marginTop:10}}>Risk Factor</h3>
+                <h3 style={{ color: 'black', marginTop: 10 }}>Risk Factor</h3>
               </ScoreSection>
-
             </div>
 
             <Card>
@@ -172,7 +170,6 @@ function Dash({ username }) {
                 )}
               </CardContent>
             </Card>
-
           </BottomRow>
         ) : (
           <RankingsList>
