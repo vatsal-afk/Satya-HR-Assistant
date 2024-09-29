@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
 import styled from 'styled-components';
+// import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -100,58 +101,64 @@ const Alert = styled.div`
 `;
 
 export default function FileUpload() {
-  const [file1, setFile1] = useState(null);
-  const [file2, setFile2] = useState(null);
-  const [message, setMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
+  // const [file1, setFile1] = useState(null);
+  // const [file2, setFile2] = useState(null);
+  // const [message, setMessage] = useState('');
+  // const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleFileChange1 = (e) => {
-    setFile1(e.target.files[0]);
+  // const handleFileChange1 = (e) => {
+  //   setFile1(e.target.files[0]);
+  // };
+
+  // const handleFileChange2 = (e) => {
+  //   setFile2(e.target.files[0]);
+  // };
+
+  // const navigate = useNavigate();
+
+  const handleClick = () => {
+    window.location.href = 'http://127.0.0.1:5000';
   };
 
-  const handleFileChange2 = (e) => {
-    setFile2(e.target.files[0]);
-  };
+  // const handleFileUpload = async () => {
+  //   if (!file1 || !file2) {
+  //     setMessage('Please select both files.');
+  //     setIsSuccess(false);
+  //     return;
+  //   }
 
-  const handleFileUpload = async () => {
-    if (!file1 || !file2) {
-      setMessage('Please select both files.');
-      setIsSuccess(false);
-      return;
-    }
+    // const formData = new FormData();
+    // formData.append('recommendation', file1);
+    // formData.append('resume', file2);
 
-    const formData = new FormData();
-    formData.append('recommendation', file1);
-    formData.append('resume', file2);
+    // try {
+    //   const response = await fetch('http://localhost:3000/analyze', {
+    //     method: 'POST',
+    //     body: formData,
+    //   });
 
-    try {
-      const response = await fetch('http://localhost:3000/analyze', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setMessage('Files processed successfully!');
-        setIsSuccess(true);
-        console.log('Analysis results:', result);
-      } else {
-        setMessage('Processing failed. Please try again.');
-        setIsSuccess(false);
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-      setMessage('An error occurred during processing.');
-      setIsSuccess(false);
-    }
-  };
+    //   if (response.ok) {
+    //     const result = await response.json();
+    //     setMessage('Files processed successfully!');
+    //     setIsSuccess(true);
+    //     console.log('Analysis results:', result);
+    //   } else {
+    //     setMessage('Processing failed. Please try again.');
+    //     setIsSuccess(false);
+    //   }
+    // } catch (error) {
+    //   console.error('Upload error:', error);
+    //   setMessage('An error occurred during processing.');
+    //   setIsSuccess(false);
+    // }
+  // };
 
   return (
     <Container>
       <Card>
         <Title>Upload Files</Title>
         
-        <InputGroup>
+        {/* <InputGroup>
           <Label>ZIP File:</Label>
           <FileInput type="file" onChange={handleFileChange1} accept=".zip" />
         </InputGroup>
@@ -159,16 +166,16 @@ export default function FileUpload() {
         <InputGroup>
           <Label>PDF File:</Label>
           <FileInput type="file" onChange={handleFileChange2} accept=".pdf" />
-        </InputGroup>
+        </InputGroup> */}
 
-        <Button onClick={handleFileUpload}>
+        <Button onClick={handleClick}>
           <Upload size={16} style={{ marginRight: '0.5rem' }} />
           Upload Files
         </Button>
 
-        {message && (
+        {/* {message && (
           <Alert success={isSuccess.toString()}>{message}</Alert>
-        )}
+        )} */}
       </Card>
     </Container>
   );

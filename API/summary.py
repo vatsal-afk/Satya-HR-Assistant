@@ -5,7 +5,7 @@ import re
 import os
 
 # Initialize the Flask app
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Set the upload folder where files will be stored
 UPLOAD_FOLDER = './uploads'
@@ -117,5 +117,5 @@ def upload_file():
     </form>
     '''
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     app.run(debug=True)
