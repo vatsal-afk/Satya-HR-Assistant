@@ -1,0 +1,111 @@
+[
+    {
+        "ID": 398,
+        "Number_of_Jobs": 2,
+        "Number_of_Adjectives": 143,
+        "Number_of_Degrees": 0,
+        "Number_of_Certificates": 2,
+        "Years_of_Experience": 124,
+        "Soft_skill_count": 5,
+        "Technical_skill_count": 2,
+        "Weighted_Score": 58.91,
+        "Risk_Category": "Maybe Risky"
+    },
+    {
+        "ID": 797,
+        "Number_of_Jobs": 3,
+        "Number_of_Adjectives": 302,
+        "Number_of_Degrees": 1,
+        "Number_of_Certificates": 0,
+        "Years_of_Experience": 29,
+        "Soft_skill_count": 6,
+        "Technical_skill_count": 3,
+        "Weighted_Score": 54.44,
+        "Risk_Category": "Maybe Risky"
+    },
+    {
+        "ID": 960,
+        "Number_of_Jobs": 3,
+        "Number_of_Adjectives": 89,
+        "Number_of_Degrees": 0,
+        "Number_of_Certificates": 0,
+        "Years_of_Experience": 114,
+        "Soft_skill_count": 3,
+        "Technical_skill_count": 0,
+        "Weighted_Score": 47.79,
+        "Risk_Category": "No Risk"
+    },
+    {
+        "ID": 169,
+        "Number_of_Jobs": 3,
+        "Number_of_Adjectives": 50,
+        "Number_of_Degrees": 1,
+        "Number_of_Certificates": 4,
+        "Years_of_Experience": 124,
+        "Soft_skill_count": 7,
+        "Technical_skill_count": 5,
+        "Weighted_Score": 45.34,
+        "Risk_Category": "Risky"
+    },
+    {
+        "ID": 410,
+        "Number_of_Jobs": 4,
+        "Number_of_Adjectives": 58,
+        "Number_of_Degrees": 3,
+        "Number_of_Certificates": 2,
+        "Years_of_Experience": 114,
+        "Soft_skill_count": 4,
+        "Technical_skill_count": 4,
+        "Weighted_Score": 43.92,
+        "Risk_Category": "Maybe Risky"
+    },
+    {
+        "ID": 266,
+        "Number_of_Jobs": 3,
+        "Number_of_Adjectives": 131,
+        "Number_of_Degrees": 1,
+        "Number_of_Certificates": 0,
+        "Years_of_Experience": 78,
+        "Soft_skill_count": 2,
+        "Technical_skill_count": 3,
+        "Weighted_Score": 43.49,
+        "Risk_Category": "Maybe Risky"
+    },
+    {
+        "ID": 106,
+        "Number_of_Jobs": 3,
+        "Number_of_Adjectives": 76,
+        "Number_of_Degrees": 1,
+        "Number_of_Certificates": 2,
+        "Years_of_Experience": 90,
+        "Soft_skill_count": 5,
+        "Technical_skill_count": 0,
+        "Weighted_Score": 38.94,
+        "Risk_Category": "Maybe Risky"
+    },
+    {
+        "ID": 174,
+        "Number_of_Jobs": 3,
+        "Number_of_Adjectives": 196,
+        "Number_of_Degrees": 0,
+        "Number_of_Certificates": 1,
+        "Years_of_Experience": 30,
+        "Soft_skill_count": 7,
+        "Technical_skill_count": 3,
+        "Weighted_Score": 38.69,
+        "Risk_Category": "Risky"
+    },
+    {
+        "ID": 322,
+        "Number_of_Jobs": 6,
+        "Number_of_Adjectives": 231,
+        "Number_of_Degrees": 1,
+        "Number_of_Certificates": 0,
+        "Years_of_Experience": 10,
+        "Soft_skill_count": 9,
+        "Technical_skill_count": 6,
+        "Weighted_Score": 38.33,
+        "Risk_Category": "Risky"
+    }
+]
+
