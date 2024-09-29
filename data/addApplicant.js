@@ -66,7 +66,7 @@ app.get("/sortedApplicants", (req, res) => {
                 return res.status(404).send("No applicants found.");
             }
             console.log("Sorted Applicants Count:", applicants.length); // Log number of applicants
-            console.log("Sorted Applicants Data:", applicants); // Log all sorted applicants
+           // console.log("Sorted Applicants Data:", applicants); // Log all sorted applicants
             res.status(200).json(applicants); // Send response with sorted applicants
         })
         .catch((err) => {
