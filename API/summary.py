@@ -35,10 +35,29 @@ def extract_text_from_pdf(file_path):
 def get_applied_role(resume_text):
     return resume_text.split()[0]  # Get the first word
 
-# List of 200+ technical skills for extraction
 technical_skills_list = [
-    "Python", "Java", "C++", "SQL", "JavaScript", "AWS", "Cloud", "Docker", "Kubernetes", "Azure",
-    # Add remaining 200+ technical skills
+    "Python", "Java", "C++", "SQL", "JavaScript", "AWS", "Cloud", "Docker", "Kubernetes", "Azure", 
+    "React", "Node.js", "Angular", "Flask", "Django", "HTML", "CSS", "TensorFlow", "PyTorch", 
+    "Machine Learning", "Deep Learning", "Data Science", "Big Data", "Hadoop", "Spark", "Scala", 
+    "Tableau", "PowerBI", "Jenkins", "Git", "GitHub", "Linux", "Windows", "Unix", "Bash", "Shell", 
+    "DevOps", "CI/CD", "REST APIs", "GraphQL", "NoSQL", "MongoDB", "PostgreSQL", "SQLite", "Redis", 
+    "ElasticSearch", "Terraform", "Ansible", "Puppet", "Chef", "Vagrant", "Jira", "Confluence", 
+    "Agile", "Scrum", "Kanban", "Trello", "Slack", "Zoom", "Salesforce", "SAP", "Oracle", "MATLAB", 
+    "R", "NumPy", "Pandas", "SciPy", "Keras", "NLTK", "spaCy", "OpenCV", "Unity", "Unreal Engine", 
+    "Game Development", "iOS", "Android", "Swift", "Kotlin", "Objective-C", "Xcode", "Firebase", 
+    "AWS Lambda", "EC2", "S3", "RDS", "GCP", "Firebase", "Heroku", "Jupyter", "SAS", "SPSS", 
+    "Tableau", "Snowflake", "PowerShell", "Perl", "Lua", "TypeScript", "Rust", "Go", "Ruby", "PHP", 
+    "Laravel", "Symfony", "CakePHP", "WordPress", "Drupal", "Magento", "WooCommerce", "Shopify", 
+    "Joomla", "Salesforce", "Zoho", "HubSpot", "Marketo", "Squarespace", "Wix", "Unity", "Android Studio", 
+    "Xamarin", "Gradle", "Maven", "Ant", "Webpack", "Gulp", "Grunt", "Nginx", "Apache", "Tomcat", 
+    "JBoss", "GlassFish", "RabbitMQ", "Kafka", "ActiveMQ", "Zookeeper", "Cassandra", "HBase", "CouchDB", 
+    "Couchbase", "HDFS", "Sqoop", "Oozie", "Flume", "Storm", "Flink", "Airflow", "DataBricks", 
+    "Looker", "Mode Analytics", "Metabase", "Heap Analytics", "Google Analytics", "Mixpanel", "Segment", 
+    "Amplitude", "Optimizely", "Crazy Egg", "Hotjar", "SEMrush", "Moz", "Ahrefs", "BrightEdge", "Yoast", 
+    "Adobe Analytics", "Figma", "Sketch", "InVision", "Adobe XD", "Axure", "Balsamiq", "Zeplin", 
+    "Proto.io", "Marvel", "Framer", "Maze", "UXPin", "Principle", "Abstract", "Blender", "Autodesk", 
+    "Maya", "3ds Max", "Cinema 4D", "Houdini", "Rhino", "SketchUp", "Fusion 360", "Onshape", "SolidWorks", 
+    "ANSYS", "Mathematica", "LabVIEW", "Simulink", "Cadence", "Mentor Graphics", "Altium Designer"
 ]
 
 # Function to extract technical skills and calculate score
