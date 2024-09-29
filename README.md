@@ -53,7 +53,11 @@ node addApplicant.js
 ```
 
 <p>4. Python files</p>
+
+<p>might need to setup venv for linux</p>
+
 <p>Alternatively : </p>
+
 ```
 cd server
 ```
