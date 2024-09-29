@@ -15,10 +15,24 @@ echo "Navigating to data folder and executing addApplicant.js..."
 cd ../data || exit
 node addApplicant.js
 
-# Step 4: Navigate to API folder, install dependencies, and run the Python script
-echo "Navigating to API folder, installing Python dependencies, and running summary.py..."
+# Step 4: Navigate to API folder, activate virtual environment, install dependencies, and run the Python script
+echo "Navigating to API folder, activating virtual environment, installing dependencies, and running summary.py..."
 cd ../API || exit
+
+# Step 4.1: Create and activate virtual environment if it doesn't exist
+if [ ! -d "venv" ]; then
+  echo "Creating virtual environment..."
+  python3 -m venv venv
+fi
+
+# Step 4.2: Activate the virtual environment
+echo "Activating virtual environment..."
+source venv/bin/activate
+
+# Step 4.3: Install required Python packages
 pip install -r requirements.txt
+
+# Step 4.4: Run the Python script
 python summary.py
 
 # Step 5: Bring back to root directory
