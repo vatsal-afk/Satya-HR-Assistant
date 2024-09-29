@@ -4,6 +4,9 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import DownloadPDFButton from '../components/downloadButton';
 import NavBar from '../components/navBar';
+import graph1 from './graph1.jpg';
+import graph2 from './graph2.jpg';
+
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -103,6 +106,10 @@ const ListItem = styled.li`
   }
 `;
 
+const riskpara = styled.p`
+font-weight: 700;
+`;
+
 function Dash({ username }) {
   const [selectedUser, setSelectedUser] = useState(null);
   const [applicants, setApplicants] = useState([]);
@@ -140,7 +147,8 @@ function Dash({ username }) {
                 <p>ID: {selectedUser.ID}</p>
                 <p>Number of Jobs: {selectedUser.Number_of_Jobs}</p>
                 <p>Years of Experience: {selectedUser.Years_of_Experience}</p>
-                <p>Risk Category: {selectedUser.Risk_Category}</p>
+                <p style={{ fontWeight: 'bold' }}>Risk Category: {selectedUser.Risk_Category}</p>
+
                 <Button onClick={() => setSelectedUser(null)}>Back to Applicants</Button>
               </CardContent>
             </Card>
@@ -157,6 +165,7 @@ function Dash({ username }) {
             <Card>
               <CardTitle>Skills</CardTitle>
               <CardContent>
+              <img src={graph1} style={{ width: '100%' }} alt="Graph" />
                 <p>Soft Skills: {selectedUser.Soft_skill_count}</p>
                 <p>Technical Skills: {selectedUser.Technical_skill_count}</p>
                 <p>Number of Adjectives: {selectedUser.Number_of_Adjectives}</p>

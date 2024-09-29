@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const PageContainer = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ const PageContainer = styled.div`
   width: 100vw;
   background-color: #f0f2f5;
   font-family: Arial, sans-serif;
-`
+`;
 
 const FormContainer = styled.div`
   background-color: white;
@@ -19,18 +20,18 @@ const FormContainer = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-`
+`;
 
 const Title = styled.h1`
   text-align: center;
   color: #333;
   margin-bottom: 1.5rem;
-`
+`;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const Input = styled.input`
   padding: 0.75rem;
@@ -38,7 +39,7 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
-`
+`;
 
 const Button = styled.button`
   padding: 0.75rem;
@@ -53,97 +54,103 @@ const Button = styled.button`
   &:hover {
     background-color: #003d82;
   }
-`
+`;
 
 const ToggleText = styled.p`
   text-align: center;
   margin-top: 1rem;
-`
+`;
 
 const ToggleLink = styled.span`
   color: #0056b3;
   cursor: pointer;
   text-decoration: underline;
-`
+`;
 
 const ErrorMessage = styled.p`
   color: #d32f2f;
   font-size: 0.875rem;
   margin-top: -0.5rem;
   margin-bottom: 0.5rem;
-`
+`;
 
-function App() {
-  const [isLogin, setIsLogin] = useState(true)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [error, setError] = useState('')
+function UserLogin({ onLogin }) {
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError('');
 
     if (!email || !password) {
-      setError('Please fill in all fields')
-      return
+      setError('Please fill in all fields');
+      return;
     }
 
     if (!isLogin && !name) {
-      setError('Please enter your name')
-      return
+      setError('Please enter your name');
+      return;
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError('Please enter a valid email address');
-      return
+      return;
     }
+
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', { email, password });
-      console.log({response})
+      const endpoint = isLogin
+        ? 'http://localhost:3000/auth/login'
+        : 'http://localhost:3000/auth/signup';
+      const payload = isLogin
+        ? { email, password }
+        : { email, password, name };
+      
+      const response = await axios.post(endpoint, payload);
+
       if (response.data.token) {
-        // If login is successful, call onLogin to update the user state in the parent component
-        onLogin(response.data.user);
-        console.log("congrats login success");
+        if (typeof onLogin === 'function') {
+          onLogin(response.data.user);
+        } else {
+          console.log('Login successful, but onLogin is not a function');
+        }
         
+        console.log("Login/signup success:", response.data.user);
+
+        // Navigate to dashboard on successful login/signup
+        navigate('/dashboard');
       } else {
-        console.log({response})
-        console.log('Login failed:', response.data.message ||"Unknown error");
+        setError(response.data.message || "Unknown error occurred");
       }
     } catch (error) {
-      // console.error('Error during login:', error.message);
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log('Login failed:', error.response.data.message || 'Unknown error');
-        console.log('Status code:', error.response.status);
+        setError(error.response.data.message || 'Failed to authenticate');
       } else if (error.request) {
-        // The request was made but no response was received
-        console.log('No response received from the server');
+        setError('No response from the server. Please try again later.');
       } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error during login:', error.message);
+        setError('An unexpected error occurred. Please try again.');
       }
+      console.error('Error:', error);
     }
-
-    
-
-    
-  }
+  };
 
   return (
     <PageContainer>
       <FormContainer>
         <Title>{isLogin ? 'Login' : 'Sign Up'}</Title>
         <Form onSubmit={handleSubmit}>
-          {/* {!isLogin && (
+          {!isLogin && (
             <Input
               type="text"
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-          )} */}
+          )}
           <Input
             type="email"
             placeholder="Email"
@@ -167,7 +174,7 @@ function App() {
         </ToggleText>
       </FormContainer>
     </PageContainer>
-  )
+  );
 }
 
-export default App;
+export default UserLogin;

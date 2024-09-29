@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const Applicant = require("./models/resume");
+const User = require("./models/users");
 
 // Initialize Express app
 const app = express();
@@ -16,8 +19,9 @@ mongoose.connect("mongodb://localhost:27017/ranks", {
 });
 
 app.use(bodyParser.json());
+
 const corsOptions = {
-    origin: 'http://localhost:5173', // Fixed the extra space and removed the trailing slash
+    origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
@@ -26,22 +30,34 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
-// Define the schema
-const applicantSchema = new mongoose.Schema({
-    ID: Number,
-    Number_of_Jobs: Number,
-    Number_of_Adjectives: Number,
-    Number_of_Degrees: Number,
-    Number_of_Certificates: Number,
-    Years_of_Experience: Number,
-    Soft_skill_count: Number,
-    Technical_skill_count: Number,
-    Weighted_Score: Number,
-    Risk_Category: String
-});
+// Login route
+app.post("/auth/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-// Create the model
-const Applicant = mongoose.model("Applicant", applicantSchema);
+        console.log('Type of password:', typeof password);
+
+        // Find the user by email
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid email' });
+        }
+
+        // Compare provided password (no hashing involved)
+        if (user.password !== password) {
+            return res.status(401).json({ error: 'Wrong password' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign({ userId: user._id }, '111', { expiresIn: '1h' });
+
+        console.log('JWT Token:', token);
+        res.json({ token, user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to login' });
+    }
+});
 
 // Route to add a new applicant
 app.post("/addApplicant", (req, res) => {
