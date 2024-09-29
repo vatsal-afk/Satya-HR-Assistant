@@ -7,6 +7,7 @@ import graph2 from '../assets/graphd2.jpg';
 import graph3 from '../assets/graphd3.jpg';
 import graph4 from '../assets/graphd4.jpg';
 
+
 const Container = styled.div`
   background-color: #ecf0f1;
   min-height: 100vh;
