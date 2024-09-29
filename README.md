@@ -34,7 +34,7 @@ cd dashboard
 npm install
 ```
 
-<p>4. setup the server</p>
+<p>3. setup the server</p>
 
 ```
 cd server
@@ -52,7 +52,32 @@ cd ../data
 node addApplicant.js
 ```
 
-<p>8. Python files</p>
+<p>4. Python files</p>
+<p>Alternatively : </p>
+```
+cd server
+```
+
+```
+chmod +x satya.sh
+```
+```
+./satya.sh
+```
+
+```
+chmod +x serve.sh
+```
+```
+./serve.sh
+```
+
+```
+chmod +x py.sh
+```
+```
+./py.sh
+```
 
   
   
