@@ -16,6 +16,7 @@ data = {
     "Risk_Category": "Maybe Risky"
 }
 
+
 # Wrap the dictionary in a list to create a DataFrame
 df = pd.DataFrame([data])
 

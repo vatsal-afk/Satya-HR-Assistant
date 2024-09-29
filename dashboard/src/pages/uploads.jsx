@@ -95,8 +95,8 @@ const Alert = styled.div`
   margin-top: 1rem;
   padding: 0.75rem;
   border-radius: 0.375rem;
-  background-color: ${props => props.success ? '#d1fae5' : '#fee2e2'};
-  color: ${props => props.success ? '#047857' : '#b91c1c'};
+  background-color: ${props => props.$success ? '#d1fae5' : '#fee2e2'};
+  color: ${props => props.$success ? '#047857' : '#b91c1c'};
 `;
 
 export default function FileUpload() {
@@ -120,24 +120,12 @@ export default function FileUpload() {
       return;
     }
 
-    // if (file1.type !== 'application/zip') {
-    //   setMessage('File 1 must be a ZIP file.');
-    //   setIsSuccess(false);
-    //   return;
-    // }
-
-    // if (file2.type !== 'application/pdf') {
-    //   setMessage('File 2 must be a PDF file.');
-    //   setIsSuccess(false);
-    //   return;
-    // }
-
     const formData = new FormData();
-    formData.append('recommendations', file1);
+    formData.append('recommendation', file1);
     formData.append('resume', file2);
 
     try {
-      const response = await fetch('/api/analyze', {
+      const response = await fetch('http://localhost:3000/analyze', {
         method: 'POST',
         body: formData,
       });
@@ -179,9 +167,9 @@ export default function FileUpload() {
         </Button>
 
         {message && (
-          <Alert success={isSuccess}>{message}</Alert>
+          <Alert success={isSuccess.toString()}>{message}</Alert>
         )}
       </Card>
     </Container>
-  );
+  );
 }

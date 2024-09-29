@@ -120,6 +120,7 @@ function Dash({ username }) {
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
+    console.log(user)
   };
 
   return (
@@ -147,7 +148,7 @@ function Dash({ username }) {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 50 }}>
               <ScoreSection>
                 <div style={{ width: 150, height: 150 }}>
-                  <CircularProgressbar value={selectedUser.Weighted_Score} text={`${selectedUser.Weighted_Score.toFixed(2)}`} />
+                  <CircularProgressbar value={selectedUser.Weighted_Score_Normalized} text={`${selectedUser.Weighted_Score_Normalized.toFixed(2)}`} />
                 </div>
                 <h3 style={{ color: 'black', marginTop: 10 }}>Weighted Score</h3>
               </ScoreSection>
