@@ -5,6 +5,7 @@ import Dashboard from "./dashboard";
 import Dash from "./dash";
 
 import Upload from './uploads';
+import UserLogin from "../components/UserLogin";
 
 
 
@@ -19,10 +20,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
-        <Route path="/dash" element={<Dash />} /> {/* Define the rankings route */}
-
+        <Route path="/dashboard/dash" element={<Dash />} /> {/* Define the rankings route */}
+        <Route path="/" element={<UserLogin />} />
         <Route path="/upload" element={<Upload />} /> 
       </Routes>
     </Router>
