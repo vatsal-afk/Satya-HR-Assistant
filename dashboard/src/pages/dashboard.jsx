@@ -175,15 +175,15 @@ function Dashboard() {
     const totalResumes = resumeData.length;
     
     // Calculate qualified resumes
-    const weightedScores = resumeData.map(resume => resume.weighted_score);
+    const weightedScores = resumeData.map(resume => resume.Weighted_Score_Normalized);
     const minScore = Math.min(...weightedScores);
     const maxScore = Math.max(...weightedScores);
     const qualificationThreshold = minScore + (maxScore - minScore) / 2;
-    const qualifiedResumes = resumeData.filter(resume => resume.weighted_score >= qualificationThreshold).length;
+    const qualifiedResumes = resumeData.filter(resume => resume.Weighted_Score_Normalized >= qualificationThreshold).length;
     
     // Calculate risky resumes
     const meanScore = weightedScores.reduce((sum, score) => sum + score, 0) / totalResumes;
-    const riskyResumes = resumeData.filter(resume => resume.weighted_score > meanScore).length;
+    const riskyResumes = resumeData.filter(resume => resume.Weighted_Score_Normalized > meanScore).length;
 
     setStats({
       totalResumes,
