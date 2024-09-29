@@ -88,7 +88,7 @@ def upload_file():
 
         # Step 5: Use the Google Generative AI model to analyze the resume
         # Replace with your actual Google API key
-        api_key = 'AIzaSyD8EvOQbmR-iv2GU_9DKIaQ8gfrj1xNXcM'
+        api_key = ''
         genai.configure(api_key=api_key)
 
         # Generate a summary of the resume
