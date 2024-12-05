@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import { login, signup } from './services/authService'; // Assuming you have login/signup functions
+import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
   display: flex;
@@ -73,77 +74,61 @@ const ErrorMessage = styled.p`
   margin-bottom: 0.5rem;
 `
 
-function App() {
+function Login() {
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError('');
 
     if (!email || !password) {
-      setError('Please fill in all fields')
-      return
+      setError('Please fill in all fields');
+      return;
     }
 
     if (!isLogin && !name) {
-      setError('Please enter your name')
-      return
+      setError('Please enter your name');
+      return;
     }
 
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address');
-      return
-    }
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', { email, password });
-      console.log({response})
-      if (response.data.token) {
-        // If login is successful, call onLogin to update the user state in the parent component
-        onLogin(response.data.user);
-        console.log("congrats login success");
-        
+      if (isLogin) {
+        // Call the login service
+        const data = await login(email, password);
+        //console.log('Login successful:', data);
+        if (data.token) {
+          localStorage.setItem('token', data.token); // Save token to localStorage
+          window.location.href = '/dashboard'; // Redirect to dashboard
+        }
       } else {
-        console.log({response})
-        console.log('Login failed:', response.data.message ||"Unknown error");
+        // Call the signup service
+        await signup(name, email, password);
+        setIsLogin(true); // Switch to login view after successful signup
+        setError('Account created! Please log in.');
       }
     } catch (error) {
-      // console.error('Error during login:', error.message);
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log('Login failed:', error.response.data.message || 'Unknown error');
-        console.log('Status code:', error.response.status);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.log('No response received from the server');
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error during login:', error.message);
-      }
+      setError(isLogin ? 'Invalid credentials.' : 'Account already exists.');
     }
-
-    
-
-    
-  }
+  };
 
   return (
     <PageContainer>
       <FormContainer>
         <Title>{isLogin ? 'Login' : 'Sign Up'}</Title>
         <Form onSubmit={handleSubmit}>
-          {/* {!isLogin && (
+          {!isLogin && (
             <Input
               type="text"
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-          )} */}
+          )}
           <Input
             type="email"
             placeholder="Email"
@@ -170,4 +155,4 @@ function App() {
   )
 }
 
-export default App;
+export default Login;
